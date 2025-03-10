@@ -41,9 +41,9 @@ def extract_data_for_endpoint(endpoint_details, schema):
 def get_endpoint_with_data(endpoint, endpoint_details, schema):
     """Returns the endpoint with the necessary data."""
     data = extract_data_for_endpoint(endpoint_details, schema)
-
     return {
         'name': endpoint_details.get('name'),
+        'responses': endpoint_details.get('responses'),
         'type': endpoint_details.get('requestType'),
         'endpoint': endpoint.split('_')[0],
         'method': endpoint_details.get('method'),
@@ -58,6 +58,7 @@ def extract_endpoints(schema):
         for method, details in methods.items():
             endpoints[f"{path}_{method}"] = {
                 "name": details.get("tags", [""])[0],
+                "responses": details.get("responses"),
                 "requestType": details.get("operationId"),
                 "method": method,
                 "parameters": details.get("parameters", []),

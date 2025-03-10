@@ -24,7 +24,4 @@ def {{ function_name }}({{ parameters_signature }}) -> Union[dict, None]:
     {% endif %}
     response = requests.{{ method }}(endpoint_url, headers=headers{% if json_data %}, json=data{% endif %})
     
-    if response.status_code in [200, 201]:
-        return response.json()
-    else:
-        return None
+    {{ responses_format }}

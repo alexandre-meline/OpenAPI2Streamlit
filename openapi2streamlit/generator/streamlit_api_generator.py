@@ -73,8 +73,6 @@ def format_fonc_params_description(data: dict) -> str:
         constraints = []
         if 'maxLength' in properties:
             constraints.append(f"max longueur: {properties['maxLength']}")
-        if 'pattern' in properties:
-            constraints.append(f"pattern: {properties['pattern']}")
         if 'format' in properties:
             constraints.append(f"format: {properties['format']}")
         if 'enum' in properties:
@@ -96,12 +94,23 @@ def generate_streamlit_api_folder(output_dir: str, group_request_name: str):
     return folder
 
 
+def format_responses(responses: dict) -> str:
+    """Formats the responses for the API call."""
+    response_str = ""
+    for status_code, response in responses.items():
+        response_str += f"if response.status_code == {status_code}:\n"
+        response_str += f"        return response.json()\n"
+        response_str += "    return None\n"
+    return response_str
+
+
 def generate_streamlit_api_component(endpoint_data: dict, output_dir: str = "output/"):
     """Generates a Python file for a given endpoint with an API call."""
     env = Environment(loader=FileSystemLoader("openapi2streamlit/templates"))
     template = env.get_template("streamlit_api_component.jinja")
 
     group_request_name = endpoint_data["name"]
+    responses = endpoint_data["responses"]
     function_name = endpoint_data["type"]
     endpoint = endpoint_data["endpoint"]
     method = endpoint_data["method"].lower()
@@ -111,11 +120,13 @@ def generate_streamlit_api_component(endpoint_data: dict, output_dir: str = "out
     folder = generate_streamlit_api_folder(output_dir, group_request_name)
     
     parameters_signature = format_parameters_for_signature(data, parameters)
+    responses_format = format_responses(responses)
     function_params_description = format_fonc_params_description(data)
     json_data = format_json_data(data)
     
     output = template.render(
         function_name=function_name,
+        responses_format=responses_format,
         endpoint=endpoint,
         method=method,
         parameters_signature=parameters_signature,
