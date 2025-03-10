@@ -3,11 +3,11 @@ from openapi2streamlit.openapi_parser.loader import load_openapi_schema
 from openapi2streamlit.openapi_parser.extractor import (
     extract_info, extract_endpoints, get_endpoint_with_data
     )
-from openapi2streamlit.generator.streamlit_baseapp_generator import (
+from openapi2streamlit.generator.streamlit.streamlit_baseapp_generator import (
     generate_streamlit_baseapp_component
     )
-from openapi2streamlit.generator.streamlit_generator import generate_streamlit_component
-from openapi2streamlit.generator.streamlit_api_generator import generate_streamlit_api_component
+from openapi2streamlit.generator.streamlit.streamlit_generator import generate_streamlit_component
+from openapi2streamlit.generator.streamlit.streamlit_api_generator import generate_streamlit_api_component
 
 
 def main():
