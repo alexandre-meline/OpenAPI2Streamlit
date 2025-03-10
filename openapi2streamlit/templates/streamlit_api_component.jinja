@@ -12,7 +12,7 @@ def {{ function_name }}({{ parameters_signature }}) -> Union[dict, None]:
     Function to call the {{ method.upper() }} request on the {{ endpoint }} endpoint.
     {{function_params_description}}
     """
-    endpoint_url = BASE_URL + "{{ endpoint }}"
+    endpoint_url = f"{BASE_URL}{{ endpoint }}"
     headers = {
         'Accept': 'application/json',
         'Content-Type': 'application/json'

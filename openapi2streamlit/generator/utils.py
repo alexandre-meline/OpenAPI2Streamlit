@@ -32,7 +32,7 @@ def generate_env_file(base_url, output_dir):
         base_url=base_url
     )
 
-    file_name = f"{output_dir}.env.py"
+    file_name = f"{output_dir}.env"
 
     with open(file_name, "w") as f:
         f.write(output)
