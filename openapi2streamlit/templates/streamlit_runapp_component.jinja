@@ -1,0 +1,20 @@
+import streamlit as st
+from components.authentication.auth_components import auth_component
+
+st.set_page_config(page_title="{{api_title}} {{api_version}}", page_icon=":rocket:", layout="wide")
+
+def main():
+    if "token" not in st.session_state:
+        auth_component()
+    else:
+        st.title("{{api_title}} {{api_version}}")
+        {% if api_description %}
+        st.write("{{api_description}}")
+        {% endif %}
+        
+        if st.sidebar.button("Logout"):
+            del st.session_state["token"]
+            st.rerun()
+
+if __name__ == "__main__":
+    main()
