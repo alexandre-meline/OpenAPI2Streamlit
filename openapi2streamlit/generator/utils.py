@@ -25,8 +25,8 @@ def generate_requirements_file(output_dir):
 
 def generate_env_file(base_url, output_dir):
     """Generates an .env file"""
-    env = Environment(loader=FileSystemLoader("openapi2streamlit/templates"))
-    template = env.get_template("streamlit_env_file.jinja")
+    env = Environment(loader=FileSystemLoader("openapi2streamlit/templates/streamlit/"))
+    template = env.get_template("env_file.jinja")
 
     output = template.render(
         base_url=base_url

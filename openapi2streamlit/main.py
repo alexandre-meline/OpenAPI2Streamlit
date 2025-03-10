@@ -9,6 +9,7 @@ from openapi2streamlit.generator.streamlit_baseapp_generator import (
 from openapi2streamlit.generator.streamlit_generator import generate_streamlit_component
 from openapi2streamlit.generator.streamlit_api_generator import generate_streamlit_api_component
 
+
 def main():
     parser = argparse.ArgumentParser(description="Streamlit Component Generator from OpenAPI")
 
@@ -27,10 +28,13 @@ def main():
     generate_streamlit_baseapp_component(api_infos, args.base_url, args.output)
 
     # Generate components for the Streamlit project's api folder
+    api_files_paths = []
     for endpoint, details in endpoints.items():
         endpoint_datas = get_endpoint_with_data(endpoint, details, schema)
 
-        generate_streamlit_api_component(endpoint_datas, args.output)
+        file_path = generate_streamlit_api_component(endpoint_datas, args.output)
+        api_files_paths.append(file_path)
+    print(f"[📦] Files Generated: {api_files_paths}")
 
     print(f"[🎉] Generation Completed! Files Available in {args.output}")
 

@@ -31,8 +31,8 @@ requirements.txt
 
 def generate_run_app_file(api_title="My app title", api_description="Welcome to the my app", api_version="0.1", output_dir="output/"):
     """Generate the run_app.py file"""
-    env = Environment(loader=FileSystemLoader("openapi2streamlit/templates"))
-    template = env.get_template("streamlit_runapp_component.jinja")
+    env = Environment(loader=FileSystemLoader("openapi2streamlit/templates/streamlit/"))
+    template = env.get_template("runapp_file.jinja")
 
     output = template.render(
         api_title=api_title,

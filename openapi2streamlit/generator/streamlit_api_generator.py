@@ -106,7 +106,7 @@ def format_responses(responses: dict) -> str:
 
 def generate_streamlit_api_component(endpoint_data: dict, output_dir: str = "output/"):
     """Generates a Python file for a given endpoint with an API call."""
-    env = Environment(loader=FileSystemLoader("openapi2streamlit/templates"))
+    env = Environment(loader=FileSystemLoader("openapi2streamlit/templates/streamlit/api/"))
     template = env.get_template("streamlit_api_component.jinja")
 
     group_request_name = endpoint_data["name"]
@@ -140,4 +140,12 @@ def generate_streamlit_api_component(endpoint_data: dict, output_dir: str = "out
         f.write(output)
     
     generate_creation_file_info(file_name)
+    data_output = {
+        "name": function_name,
+        "path": file_name,
+        "endpoint": endpoint,
+        "args": parameters_signature,
+        "json_data": json_data
+    }
+    return data_output
 
