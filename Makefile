@@ -4,5 +4,5 @@ install:
 	poetry install
 
 run:
-	openapi2streamlit datas_test/schema.yaml --output "generated_files/" --base-url "http://localhost:8000"
+	openapi2streamlit datas_test/schema.yaml --output "output/" --base-url "http://localhost:8000"
 

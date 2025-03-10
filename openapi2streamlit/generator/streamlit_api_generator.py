@@ -1,6 +1,9 @@
 import os
 from jinja2 import Environment, FileSystemLoader
-from openapi2streamlit.generator.utils import generate_init_file, generate_creation_file_info
+from openapi2streamlit.generator.utils import (
+    generate_init_file, 
+    generate_creation_file_info
+    )
 
 
 def type_serialization(prop):
