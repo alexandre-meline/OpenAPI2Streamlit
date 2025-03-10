@@ -1,29 +1,21 @@
 import streamlit as st
+{{ import_file }}
 
 def {{ function_name }}_form():
-    st.title("Créer un Compte")
+    st.title("{{ title.replace('_', ' ').capitalize() }}")
 
     with st.form("{{ function_name }}_form"):
-        id = st.number_input("ID", min_value=1, step=1)
-        account_type = st.selectbox("Type de compte", ["propfirm", "propre"])
-        name = st.text_input("Nom du compte")
-        initial_amout = st.number_input("Montant initial", min_value=0.0, format="%.2f")
-        actualy_amout = st.number_input("Montant actuel", min_value=0.0, format="%.2f")
-        user = st.number_input("ID utilisateur", min_value=1, step=1)
+        {{ fields }}
 
         submitted = st.form_submit_button("Créer")
         
         if submitted:
+            {% if json_data %}
             data = {
-                "id": id,
-                "account_type": account_type,
-                "name": name,
-                "initial_amout": initial_amout,
-                "actualy_amout": actualy_amout,
-                "user": user
+                {{ json_data }}
             }
-            
-            response = requests.post(f"{BASE_URL}/api/accounts/", json=data)
+            {% endif %}
+            response = {{ api_request }}
             
             if response.status_code == 201:
                 st.success("Compte créé avec succès!")

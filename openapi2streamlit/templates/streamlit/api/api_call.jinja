@@ -7,10 +7,10 @@ load_dotenv()
 
 BASE_URL = os.getenv("BASE_URL")
 
-def {{ function_name }}({{ parameters_signature }}) -> Union[dict, None]:
+def {{ func_name }}({{ parameters_signature }}) -> Union[dict, None]:
     """
     Function to call the {{ method.upper() }} request on the {{ endpoint }} endpoint.
-    {{function_params_description}}
+    {{ function_params_description }}
     """
     endpoint_url = f"{BASE_URL}{{ endpoint }}"
     headers = {

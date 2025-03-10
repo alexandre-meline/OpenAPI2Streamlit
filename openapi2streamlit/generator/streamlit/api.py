@@ -1,8 +1,8 @@
 import os
 from jinja2 import Environment, FileSystemLoader
-from openapi2streamlit.generator.utils import (
-    generate_init_file, 
-    generate_creation_file_info
+from openapi2streamlit.generator.streamlit.utils import (
+    generate_creation_file_info,
+    generate_streamlit_component_folder
     )
 
 
@@ -86,14 +86,6 @@ def format_fonc_params_description(data: dict) -> str:
     return "\n".join(descriptions)
 
 
-def generate_streamlit_api_folder(output_dir: str, group_request_name: str):
-    """Generates the folder for the API components."""
-    folder = f"{output_dir}api/{group_request_name}/"
-    os.makedirs(folder, exist_ok=True)
-    generate_init_file(folder)
-    return folder
-
-
 def format_responses(responses: dict) -> str:
     """Formats the responses for the API call."""
     response_str = ""
@@ -107,17 +99,18 @@ def format_responses(responses: dict) -> str:
 def generate_streamlit_api_component(endpoint_data: dict, output_dir: str = "output/"):
     """Generates a Python file for a given endpoint with an API call."""
     env = Environment(loader=FileSystemLoader("openapi2streamlit/templates/streamlit/api/"))
-    template = env.get_template("streamlit_api_component.jinja")
+    template = env.get_template("api_call.jinja")
+    sub_folder = "api/"
 
-    group_request_name = endpoint_data["name"]
+    group_component = endpoint_data["name"]
     responses = endpoint_data["responses"]
-    function_name = endpoint_data["type"]
+    func_name = endpoint_data["type"]
     endpoint = endpoint_data["endpoint"]
     method = endpoint_data["method"].lower()
     data = endpoint_data["data"]
     parameters = endpoint_data["parameters"]
     
-    folder = generate_streamlit_api_folder(output_dir, group_request_name)
+    folder = generate_streamlit_component_folder(output_dir, sub_folder, group_component)
     
     parameters_signature = format_parameters_for_signature(data, parameters)
     responses_format = format_responses(responses)
@@ -125,7 +118,7 @@ def generate_streamlit_api_component(endpoint_data: dict, output_dir: str = "out
     json_data = format_json_data(data)
     
     output = template.render(
-        function_name=function_name,
+        func_name=func_name,
         responses_format=responses_format,
         endpoint=endpoint,
         method=method,
@@ -135,17 +128,19 @@ def generate_streamlit_api_component(endpoint_data: dict, output_dir: str = "out
     )
     
     os.makedirs(output_dir, exist_ok=True)
-    file_name = f"{folder}{function_name}.py"
+    file_name = f"{folder}{func_name}.py"
     with open(file_name, "w") as f:
         f.write(output)
     
     generate_creation_file_info(file_name)
     data_output = {
-        "name": function_name,
+        "group": group_component,
+        "name": func_name,
         "path": file_name,
         "endpoint": endpoint,
         "args": parameters_signature,
         "json_data": json_data
     }
+    print(data_output)
     return data_output
 
