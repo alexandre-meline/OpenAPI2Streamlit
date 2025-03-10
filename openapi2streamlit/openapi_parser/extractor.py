@@ -6,6 +6,7 @@ def extract_info(schema):
         "version": schema.get("info", {}).get("version"),
     }
 
+
 def resolve_ref(ref_path, schema):
     """Resolve a JSON reference in the OpenAPI schema."""
     parts = ref_path.lstrip('#/').split('/')
@@ -13,6 +14,7 @@ def resolve_ref(ref_path, schema):
     for part in parts:
         ref = ref.get(part, {})
     return ref
+
 
 def extract_data_for_endpoint(endpoint_details, schema):
     """Extracts and resolves the necessary data from a given endpoint."""
@@ -26,7 +28,6 @@ def extract_data_for_endpoint(endpoint_details, schema):
                 break
     if not ref:
         return None
-    
     component_schema = resolve_ref(ref, schema)
 
     component_data = {}
@@ -35,9 +36,9 @@ def extract_data_for_endpoint(endpoint_details, schema):
         if prop.get('$ref'):
             resolved_ref = resolve_ref(prop['$ref'], schema)
             component_data[name] = resolved_ref
-            
     return component_data
-    
+
+
 def get_endpoint_with_data(endpoint, endpoint_details, schema):
     """Returns the endpoint with the necessary data."""
     data = extract_data_for_endpoint(endpoint_details, schema)
@@ -50,6 +51,7 @@ def get_endpoint_with_data(endpoint, endpoint_details, schema):
         'parameters': endpoint_details.get('parameters'),
         'data': data
     }
+
 
 def extract_endpoints(schema):
     """Extracts endpoints and their parameters."""

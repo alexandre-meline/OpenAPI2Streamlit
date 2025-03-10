@@ -1,6 +1,7 @@
 import json
 import yaml
 
+
 def load_openapi_schema(file_path):
     """Loads an OpenAPI file (JSON or YAML)"""
     with open(file_path, "r") as f:

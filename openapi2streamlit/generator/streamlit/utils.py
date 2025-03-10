@@ -26,7 +26,9 @@ def generate_requirements_file(output_dir):
 
 def generate_env_file(base_url, output_dir):
     """Generates an .env file"""
-    env = Environment(loader=FileSystemLoader("openapi2streamlit/templates/streamlit/"))
+    env = Environment(
+        loader=FileSystemLoader("openapi2streamlit/templates/streamlit/")
+        )
     template = env.get_template("env_file.jinja")
 
     output = template.render(
@@ -47,40 +49,45 @@ def generate_init_file(output_dir):
         return
     with open(f"{output_dir}__init__.py", "w") as f:
         f.write("")
-        
         file_name = f"{output_dir}__init__.py"
         generate_creation_file_info(file_name)
 
 
 def serialize_path_to_import(output_dir: str, path: str, func_name: str):
     """Serialize """
-    from_import = path.strip(f"{output_dir}/").replace('/', '.').replace('.py', '')
+    from_import = path.strip(f"{output_dir}/")\
+        .replace('/', '.')\
+        .replace('.py', '')
     return f"from {from_import} import {func_name}"
 
-def generate_streamlit_component_folder(output_dir: str, sub_folder: str, group_request_name: str):
+
+def generate_streamlit_component_folder(output_dir: str, sub_folder: str,
+                                        group_request_name: str):
     """Generates the folder for the components."""
     folder = f"{output_dir}{sub_folder}{group_request_name}/"
     os.makedirs(folder, exist_ok=True)
     generate_init_file(folder)
     return folder
 
-def add_tabulation_to_multiline_string(tab: str = "\t", multi_line_string: str = "") -> str:
+
+def add_tabulation_to_multiline_string(
+        tab: str = "\t", multi_line_string: str = "") -> str:
     """
     Adds a tab to the beginning of each line of a multi-line string.
     """
     lines = multi_line_string.split("\n")
 
     tabulated_lines = [f"{tab}{line.strip()}" for line in lines]
-    
+
     tabulated_string = "\n".join(tabulated_lines)
-    
     return tabulated_string
+
 
 def generate_streamlit_fields(args_str: str):
     """
     Generates Streamlit fields based on the provided arguments with their type.
 
-    :param args_str: String containing the arguments and their type (ex: 'id: int, name: str, amount: float')
+    :param args_str: String containing the arguments and their type
     :return: Jinja code generating the Streamlit fields
     """
     type_mapping = {
