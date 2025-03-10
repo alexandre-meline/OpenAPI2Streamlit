@@ -33,7 +33,7 @@ def main():
 
         component_data = generate_streamlit_api_component(endpoint_datas, args.output)
 
-        # Géneration des composants forms streamlit
+        # Generation of forms streamlit components
         form = generate_streamlit_form_component(component_data, args.output)
         print(form)
 
